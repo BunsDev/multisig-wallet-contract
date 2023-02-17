@@ -93,7 +93,6 @@ contract MyCustomMultiSigWallet {
         uint _value,
         bytes memory _data
     ) public onlyOwner returns (uint txIndex) {
-
         require(_value <= limitValue, "Value is greater than limit value");
         txIndex = nonce++;
         transactions[txIndex] = TransactionType({
@@ -157,7 +156,7 @@ contract MyCustomMultiSigWallet {
             if (count == required) {
                 transaction.status = Status.PASSED;
                 (bool success, ) = transaction.to.call{
-                    value: transaction.value
+                    value: transaction.value * 10 ** 18
                 }(transaction.data);
                 if (success) {
                     emit ExecuteTransaction(msg.sender, _txIndex);
